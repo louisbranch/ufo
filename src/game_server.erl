@@ -1,6 +1,6 @@
 -module(game_server).
 -export([start/0, loop/1]).
--record(game, {zombie_deck=[], player_deck=[]}).
+-include("records.hrl").
 
 start() ->
   spawn_link(?MODULE, loop, [#game{}]).

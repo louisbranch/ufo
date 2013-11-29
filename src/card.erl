@@ -5,11 +5,11 @@
 %% Draw a card from Players Deck
 %% to a player's hand
 draw([], _Hand) ->
-  {error, empty_deck};
+  {game_over, empty_player_deck};
 
 draw([Card|PlayerDeck], Hand) ->
   case Card of
-    {invasion} -> {invasion, PlayerDeck, Hand};
+    invasion -> {invasion, PlayerDeck, Hand};
     _ -> {ok, PlayerDeck, [Card|Hand]}
   end.
 
@@ -17,7 +17,7 @@ draw([Card|PlayerDeck], Hand) ->
 %% and discard afterwards to Alien
 %% Discard Pile
 reveal([], _DiscardPile) ->
-  {error, empty_deck};
+  exit(empty_alien_deck);
 
 reveal([Card|AlienDeck], DiscardPile) ->
   {ok, Card, AlienDeck, [Card|DiscardPile]}.
@@ -26,7 +26,7 @@ reveal([Card|AlienDeck], DiscardPile) ->
 %% and add to Players Discard Pile
 discard(Card, Hand, DiscardPile) ->
   case lists:delete(Card, Hand) of
-    Hand -> {error, card_not_in_hand};
+    Hand -> exit(card_not_in_hand);
     NewHand -> {ok, NewHand, [Card|DiscardPile]}
   end.
 

@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     regarde: {
       js: {
-        files: ["src/**/*.erl"],
+        files: ["src/**/*.erl", "test/**/*.erl"],
         tasks: ["shell:test"]
       }
     },

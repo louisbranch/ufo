@@ -4,19 +4,19 @@
 
 draw_empty_deck_test() ->
   {Deck, Hand} = {[], [{blue, rio}]},
-  {error, empty_deck} = draw(Deck, Hand).
+  {game_over, empty_player_deck} = draw(Deck, Hand).
 
 draw_normal_card_deck_test() ->
   {Deck, Hand} = {[{red, ny}, {black, delhi}], [{blue, rio}]},
   {ok, [{black, delhi}], [{red, ny}, {blue, rio}]} = draw(Deck, Hand).
 
 draw_invasion_card_deck_test() ->
-  {Deck, Hand} = {[{invasion}, {black, delhi}], [{blue, rio}]},
+  {Deck, Hand} = {[invasion, {black, delhi}], [{blue, rio}]},
   {invasion, [{black, delhi}], [{blue, rio}]} = draw(Deck, Hand).
 
 reveal_empty_deck_test() ->
   {Deck, Pile} = {[], [{blue, rio}]},
-  {error, empty_deck} = reveal(Deck, Pile).
+  ?assertExit(empty_alien_deck, reveal(Deck, Pile)).
 
 reveal_normal_deck_test() ->
   {Deck, Pile} = {[{red, ny}, {black, delhi}], [{blue, rio}]},
@@ -24,7 +24,7 @@ reveal_normal_deck_test() ->
 
 discard_card_not_in_hand_test() ->
   {Card, Hand, Discard} = {{red, ny}, [{blue, rio}], [{black, delhi}]},
-  {error, card_not_in_hand} = discard(Card, Hand, Discard).
+  ?assertExit(card_not_in_hand, discard(Card, Hand, Discard)).
 
 discard_card_in_hand_test() ->
   {Card, Hand, Discard} = {{red, ny}, [{blue, rio}, {red, ny}], [{black, delhi}]},
