@@ -1,11 +1,12 @@
-{application, alienation, [
-	{description, "All your base are belong to us."},
-	{vsn, "0.0.1"},
-	{modules, []},
-	{applications, [
-		kernel,
-		stdlib
-	]},
-	{mod, {game_server, []}},
-	{env, []}
-]}.
+{application, alienation,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { alienation_app, []}},
+  {env, []}
+ ]}.

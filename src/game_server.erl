@@ -3,12 +3,14 @@
 -record(game, {zombie_deck=[], player_deck=[]}).
 
 start() ->
-  spawn_link(?MODULE, loop, #game{}).
+  spawn_link(?MODULE, loop, [#game{}]).
 
 loop(State) ->
   receive
     {cards@draw, Player, Hand} ->
-      NewHand = cards:draw(Hand),
-      Player ! NewHand,
-      loop(State)
+      Deck = State#game.player_deck,
+      case cards:draw(Hand, Deck) of
+        {ok, NewDeck, NewHand} -> Player ! NewHand,
+        loop(State#game{player_deck=NewDeck})
+      end
   end.
