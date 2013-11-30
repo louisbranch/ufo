@@ -8,49 +8,49 @@
 %% {invasion, City}
 %% {game_over, alien_pool_empty}
 %% exit(city_aliens_invalid_number)
-%% exit(alien_color_not_found)
-attack(Color, City, AlienPool) ->
+%% exit(alien_type_not_found)
+attack(Type, City, AlienPool) ->
   Aliens = city:aliens(City),
   case total(Aliens) of
     3 -> {invasion, City};
-    N when N >= 0 andalso N < 3 -> attack(Color, City, AlienPool, Aliens);
+    N when N >= 0 andalso N < 3 -> attack(Type, City, AlienPool, Aliens);
     _ -> exit(city_aliens_invalid_number)
   end.
 
-attack(Color, City, AlienPool, CityAliens) ->
-  {Color, Qty} = find(Color, AlienPool),
+attack(Type, City, AlienPool, CityAliens) ->
+  {Type, Qty} = find(Type, AlienPool),
   case Qty of
     0 -> {game_over, alien_pool_empty};
     _ ->
-      NewPool = remove_from_pool(Color, AlienPool),
-      NewAliens = add_to_city(Color, CityAliens),
+      NewPool = remove_from_pool(Type, AlienPool),
+      NewAliens = add_to_city(Type, CityAliens),
       NewCity = city:aliens(City, NewAliens),
       {ok, NewCity, NewPool}
   end.
 
 %% Decrease number of aliens in pool
-remove_from_pool(Color, Aliens) ->
-  {Color, Qty} = lists:keyfind(Color, 1, Aliens),
-  lists:keyreplace(Color, 1, Aliens, {Color, Qty - 1}).
+remove_from_pool(Type, Aliens) ->
+  {Type, Qty} = lists:keyfind(Type, 1, Aliens),
+  lists:keyreplace(Type, 1, Aliens, {Type, Qty - 1}).
 
 %% Increase number of city aliens
 %% or set it to 1
-add_to_city(Color, Aliens) ->
-  Qty = case lists:keyfind(Color, 1, Aliens) of
+add_to_city(Type, Aliens) ->
+  Qty = case lists:keyfind(Type, 1, Aliens) of
     false -> 0;
-    {Color, N} -> N
+    {Type, N} -> N
   end,
-  lists:keystore(Color, 1, Aliens, {Color, Qty + 1}).
+  lists:keystore(Type, 1, Aliens, {Type, Qty + 1}).
 
 %% Return an alien tuple or
 %% exit the process if doesn't exist
-find(Color, Aliens) ->
-  case lists:keyfind(Color, 1, Aliens) of
-    false -> exit(alien_color_not_found);
+find(Type, Aliens) ->
+  case lists:keyfind(Type, 1, Aliens) of
+    false -> exit(alien_type_not_found);
     Alien -> Alien
   end.
 
 %% Return the total aliens
-%% ignoring their colors
+%% ignoring their types
 total(Aliens) ->
   lists:foldl(fun({_, Qty}, Sum) -> Qty + Sum end, 0, Aliens).
