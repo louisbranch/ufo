@@ -20,14 +20,14 @@ reveal([], _DiscardPile) ->
   exit(empty_alien_deck);
 
 reveal([Card|AlienDeck], DiscardPile) ->
-  {ok, Card, AlienDeck, [Card|DiscardPile]}.
+  {Card, AlienDeck, [Card|DiscardPile]}.
 
 %% Discard a card from a player's hand
 %% and add to Players Discard Pile
 discard(Card, Hand, DiscardPile) ->
   case lists:delete(Card, Hand) of
     Hand -> exit(card_not_in_hand);
-    NewHand -> {ok, NewHand, [Card|DiscardPile]}
+    NewHand -> {NewHand, [Card|DiscardPile]}
   end.
 
 %% Give a hand of cards for each player
@@ -40,7 +40,7 @@ initial_hand(PlayerDeck, PlayersNum) when PlayersNum > 1, PlayersNum =< 5 ->
   end,
   Hands = [[] || _ <- lists:seq(1,PlayersNum)],
   {NewDeck, NewHands} = draw_n_cards(PlayerDeck, Hands, NumCards),
-  {ok, NewDeck, NewHands}.
+  {NewDeck, NewHands}.
 
 draw_n_cards(PlayerDeck, Hands, 0) ->
   OrderCards = lists:map(fun lists:reverse/1, Hands),
@@ -54,5 +54,8 @@ draw_for_each(PlayerDeck, [], HandsDrew) ->
   {PlayerDeck, lists:reverse(HandsDrew)};
 
 draw_for_each(PlayerDeck, [Hand|Hands], HandsDrew) ->
-  {ok, NewDeck, NewHand} = draw(PlayerDeck, Hand),
-  draw_for_each(NewDeck, Hands, [NewHand|HandsDrew]).
+  case draw(PlayerDeck, Hand) of
+    {ok, NewDeck, NewHand} ->
+      draw_for_each(NewDeck, Hands, [NewHand|HandsDrew]);
+    _ -> exit(invalid_player_deck)
+  end.
