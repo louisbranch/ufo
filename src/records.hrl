@@ -1,2 +1,0 @@
--record(game, {zombie_deck=[], player_deck=[]}).
--record(city, {name, color, aliens=[], hqs=0}).
