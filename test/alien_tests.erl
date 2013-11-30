@@ -7,6 +7,13 @@ attack_with_an_invalid_pool_test() ->
   AlienPool = [{blue, 2}],
   ?assertExit(alien_color_not_found, alien:attack(Color, City, AlienPool)).
 
+attack_with_an_invalid_city_aliens_test() ->
+  Color = blue,
+  City = city:new(rio, blue),
+  InvalidCity = city:aliens(City, [{blue, 4}]),
+  AlienPool = [{blue, 2}],
+  ?assertExit(city_aliens_invalid_number, alien:attack(Color, InvalidCity, AlienPool)).
+
 attack_with_an_empty_pool_test() ->
   Color = red,
   City = city:new(rio, blue),

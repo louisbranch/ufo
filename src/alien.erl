@@ -7,12 +7,14 @@
 %% {ok, NewCity, NewPool}
 %% {invasion, City}
 %% {game_over, alien_pool_empty}
+%% exit(city_aliens_invalid_number)
 %% exit(alien_color_not_found)
 attack(Color, City, AlienPool) ->
   Aliens = city:aliens(City),
   case total(Aliens) of
     3 -> {invasion, City};
-    _ -> attack(Color, City, AlienPool, Aliens)
+    N when N >= 0 andalso N < 3 -> attack(Color, City, AlienPool, Aliens);
+    _ -> exit(city_aliens_invalid_number)
   end.
 
 attack(Color, City, AlienPool, CityAliens) ->
