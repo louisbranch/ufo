@@ -10,4 +10,4 @@ find_non_existing_city_test() ->
 find_existing_city_test() ->
   City1 = city:new(sp, red),
   City2 = city:new(rio, blue),
-  City2 = city:find(rio, [City1, City2]).
+  ?assertEqual(City2, city:find(rio, [City1, City2])).
