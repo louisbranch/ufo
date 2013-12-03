@@ -5,7 +5,8 @@ create_cities_map_test() ->
   Cities = map:cities(),
   ?assertEqual(length(Cities), 48).
 
-create_connections_map_test() ->
-  Connections = map:connections(),
-  ?assertEqual(length(Connections), 94).
-
+city_connections_map_test() ->
+  Cities = map:cities(),
+  NewYork = lists:keyfind(new_york, 2, Cities),
+  ?assertEqual([montreal, washington, london, madrid],
+               erlang:element(4, NewYork)).

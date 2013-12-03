@@ -1,16 +1,16 @@
 -module(game_server).
 -export([start/0, loop/1]).
--record(game, {zombie_deck=[], player_deck=[]}).
+-record(state, {zombie_deck=[], player_deck=[]}).
 
 start() ->
-  spawn_link(?MODULE, loop, [#game{}]).
+  spawn_link(?MODULE, loop, [#state{}]).
 
-loop(State) ->
+loop(S) ->
   receive
     {cards@draw, Player, Hand} ->
-      Deck = State#game.player_deck,
+      Deck = S#state.player_deck,
       case cards:draw(Hand, Deck) of
         {ok, NewDeck, NewHand} -> Player ! NewHand,
-        loop(State#game{player_deck=NewDeck})
+        loop(S#state{player_deck=NewDeck})
       end
   end.
