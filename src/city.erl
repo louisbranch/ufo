@@ -1,5 +1,6 @@
 -module(city).
--export([new/2, find/2, aliens/1, aliens/2]).
+-export([new/2, find/2, aliens/1, aliens/2,
+        connections/3]).
 -record(city, {name, color, aliens=[], hqs=0}).
 
 new(Name, Color) ->
@@ -14,3 +15,13 @@ find(Name, Map) ->
     City -> City
   end.
 
+connections(City, Connections, Map) ->
+  Name = City#city.name,
+  Result = lists:foldl(fun(Connection, Acc) ->
+    case Connection of
+      {Origin, Name} -> [find(Origin, Map)|Acc];
+      {Name, Destiny} -> [find(Destiny, Map)|Acc];
+      _ -> Acc
+    end
+  end, [], Connections),
+  lists:reverse(Result).
