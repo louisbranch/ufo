@@ -40,11 +40,11 @@
 {paris, algiers}.
 {paris, essen}.
 {paris, milan}.
-{essen, st. petersburg}.
+{essen, st_petersburg}.
 {essen, milan}.
 {milan, istanbul}.
-{st. petersburg, istanbul}.
-{st. petersburg, moscow}.
+{st_petersburg, istanbul}.
+{st_petersburg, moscow}.
 {algiers, cairo}.
 {algiers, istanbul}.
 {cairo, baghdad}.
@@ -91,4 +91,4 @@
 {taipei, manila}.
 {taipei, osaka}.
 {manila, sydney}.
-{tokyo, osaka},
+{tokyo, osaka}.
