@@ -1,5 +1,6 @@
 -module(city).
--export([new/2, new/3, find/2, aliens/1, aliens/2]).
+-export([new/2, new/3, find/2, aliens/1, aliens/2,
+        connections/1]).
 -record(city, {name, color, connections=[], aliens=[], hqs=0}).
 
 new(Name, Color) -> new(Name, Color, []).
@@ -9,6 +10,8 @@ new(Name, Color, Connections) ->
 
 aliens(City) -> City#city.aliens.
 aliens(City, Aliens) -> City#city{aliens=Aliens}.
+
+connections(City) -> City#city.connections.
 
 find(Name, Map) ->
   case lists:keyfind(Name, #city.name, Map) of
