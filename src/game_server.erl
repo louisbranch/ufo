@@ -5,6 +5,7 @@
          handle_info/2, terminate/2, code_change/3]).
 
 -record(state, {
+    status=ready,
     difficulty,
     players=[],
     current_player,
@@ -24,23 +25,18 @@
     attack_rate=0
 }).
 
+%% Spawn new game
 start_link(Difficulty) ->
   gen_server:start_link(?MODULE, Difficulty, []).
 
 init(Difficulty) ->
   Cities = map:cities(),
-  S = #state{difficulty=Difficulty, cities=Cities},
-  {ok, S}.
+  State = #state{difficulty=Difficulty, cities=Cities},
+  {ok, State}.
 
+%% Handle Sync calls
 handle_call(Request, _From, State) ->
   {stop, {unknown_request, Request}, State}.
-
-handle_cast(Message, State) ->
-  case Message of
-    {add_player, From, Player} ->
-      From ! {ok, Player},
-      {noreply, State}
-  end.
 
 handle_info(Message, State) ->
   case Message of
@@ -53,3 +49,11 @@ terminate(_Reason, _State) -> ok.
 
 code_change(_PreviousVersion, State, _Extra) ->
   {ok, State}.
+
+%% Handle Async calls
+handle_cast(Message, State) ->
+  case Message of
+    {add_player, From, Player} ->
+      From ! {ok, Player},
+      {noreply, State}
+  end.

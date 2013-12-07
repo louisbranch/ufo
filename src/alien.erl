@@ -1,8 +1,7 @@
 -module(alien).
 -export([attack/3]).
 
-%% Attack city increase its aliens
-%% number
+%% Attack city increase its aliens number
 %% return types:
 %% {ok, NewCity, NewPool}
 %% {invasion, City}
@@ -50,7 +49,6 @@ find(Type, Aliens) ->
     Alien -> Alien
   end.
 
-%% Return the total aliens
-%% ignoring their types
+%% Return the total aliens ignoring their types
 total(Aliens) ->
   lists:foldl(fun({_, Qty}, Sum) -> Qty + Sum end, 0, Aliens).
