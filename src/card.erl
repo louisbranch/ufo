@@ -32,11 +32,13 @@ discard(Card, Hand, DiscardPile) ->
 
 %% Give a hand of cards for each player
 %% depending the number of players
-initial_hand(PlayerDeck, PlayersNum) when PlayersNum > 1, PlayersNum =< 5 ->
+initial_hand(PlayerDeck, PlayersNum) ->
   NumCards = case PlayersNum of
+    1 -> 5;
     2 -> 4;
     3 -> 3;
-    _ -> 2
+    4 -> 2;
+    5 -> 2
   end,
   Hands = [[] || _ <- lists:seq(1,PlayersNum)],
   {NewDeck, NewHands} = draw_n_cards(PlayerDeck, Hands, NumCards),
