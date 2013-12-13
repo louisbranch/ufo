@@ -1,12 +1,12 @@
 -module(alienation_game).
--export([init/1, start/2, add_player/2]).
+-export([init/0, start/2, add_player/2]).
 -export([players/1, players_deck/1, difficulty/1]).
 
 -record(state, {
     difficulty,
     players=[],
     current_player,
-    cities,
+    cities=map:cities(),
     aliens_pool=[
       {insectoid, 24},
       {grey, 24},
@@ -15,22 +15,14 @@
     ],
     aliens_deck,
     aliens_discard=[],
-    players_deck,
+    players_deck=deck:players(),
     players_discard=[],
     hqs_pool=8,
     invasions=0,
     attack_rate=0
 }).
 
-init(PlayerName) ->
-  Cities = map:cities(),
-  PlayersDeck = deck:players(),
-  Players = player:new(PlayerName),
-  #state{
-    cities=Cities,
-    players_deck=PlayersDeck,
-    players=[Players]
-  }.
+init() -> #state{}.
 
 add_player(State, Name) ->
   Player = player:new(Name),
@@ -39,13 +31,13 @@ add_player(State, Name) ->
 
 start(Difficulty, State) ->
   Players = players(State),
-  PlayersDeck = players_deck(State),
-  {PlayersDeckDrawn, Hands} = card:initial_hand(PlayersDeck, length(Players)),
+  Deck = players_deck(State),
+  {DeckDrawn, Hands} = card:initial_hand(Deck, length(Players)),
   PlayersWithHands = player:distribute_hands(Players, Hands),
   State#state{
     difficulty=Difficulty,
     players=PlayersWithHands,
-    players_deck=PlayersDeckDrawn
+    players_deck=DeckDrawn
   }.
 
 %% State getters and setters ----------------------- %%

@@ -1,10 +1,16 @@
 -module(alienation_game_tests).
 -include_lib("eunit/include/eunit.hrl").
 
+add_player_test() ->
+  State = alienation_game:init(),
+  P1 = alienation_game:add_player(State, "luiz"),
+  ?assertEqual(1, length(alienation_game:players(P1))).
+
 game_start_helper() ->
-  State = alienation_game:init("luiz"),
-  WithPlayer = alienation_game:add_player(State, "larissa"),
-  alienation_game:start(normal, WithPlayer).
+  State = alienation_game:init(),
+  P1 = alienation_game:add_player(State, "luiz"),
+  P2 = alienation_game:add_player(P1, "larissa"),
+  alienation_game:start(normal, P2).
 
 game_start_set_difficulty_level_test() ->
   State = game_start_helper(),
