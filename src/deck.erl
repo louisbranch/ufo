@@ -1,7 +1,12 @@
 -module(deck).
--export([players/0]).
+-export([aliens/0, players/0]).
+
+aliens() ->
+  Cities = map:vertices(),
+  shuffle(Cities).
 
 players() ->
+  %FIXME
   Cities = map:vertices(),
   shuffle(Cities).
 

@@ -1,23 +1,36 @@
--module(player_tests).
+-module(alienation_player_tests).
 -include_lib("eunit/include/eunit.hrl").
 
+players_helper() ->
+  P1 = alienation_player:add([], luiz),
+  alienation_player:add(P1, larissa).
+
 new_player_test() ->
-  ?assertEqual({player, luiz, []}, player:new(luiz)).
+  ?assertEqual({player, luiz, []}, alienation_player:new(luiz)).
+
+add_player_test() ->
+  ?assertEqual([{player, larissa, []}, {player, luiz, []}], players_helper()).
+
+remove_player_test() ->
+  ?assertEqual([{player, larissa, []}], alienation_player:remove(players_helper(), luiz)).
+
+get_name_test() ->
+  Player = alienation_player:new(luiz),
+  ?assertEqual(luiz, alienation_player:name(Player)).
 
 get_hand_test() ->
-  Player = player:new(luiz),
-  ?assertEqual([], player:hand(Player)).
+  Player = alienation_player:new(luiz),
+  ?assertEqual([], alienation_player:hand(Player)).
 
 set_hand_test() ->
-  Player = player:new(luiz),
-  PlayerWithHand = player:hand(Player, [1,2,3]),
-  ?assertEqual([1,2,3], player:hand(PlayerWithHand)).
+  Player = alienation_player:new(luiz),
+  PlayerWithHand = alienation_player:hand(Player, [1,2,3]),
+  ?assertEqual([1,2,3], alienation_player:hand(PlayerWithHand)).
 
 distribute_hands_test() ->
-  Players = [player:new(luiz), player:new(larissa)],
   Hands = [[{rio, blue}], [{ny, red}]],
   ?assertEqual(
-     [{player, luiz, [{rio, blue}]},
-      {player, larissa, [{ny, red}]}],
-     player:distribute_hands(Players, Hands)
+     [{player, luiz, [{ny, red}]},
+      {player, larissa, [{rio, blue}]}],
+    alienation_player:distribute_hands(players_helper(), Hands)
   ).
