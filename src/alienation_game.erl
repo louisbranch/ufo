@@ -13,9 +13,9 @@
       {reptilian, 24},
       {martian, 24}
     ],
-    aliens_deck=deck:aliens(),
+    aliens_deck=alienation_deck:aliens(),
     aliens_discard=[],
-    players_deck=deck:players(),
+    players_deck=alienation_deck:players(),
     players_discard=[],
     hqs_pool=8,
     invasions=0,

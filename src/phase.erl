@@ -7,8 +7,8 @@ alien_attack(Deck, Pool, Discard, Map) ->
   case alien:attack(Type, City, Pool) of
     {game_over, Reason} -> {game_over, Reason};
     {invasion, City} -> {invasion, City};
-    {ok, NewCity, NewPool} ->
-      NewMap = map:update(Map, NewCity),
-      {NewDeck, NewPool, NewDiscard, NewMap}
+    {ok, _NewCity, NewPool} ->
+      %NewMap = map:update(Map, NewCity),
+      {NewDeck, NewPool, NewDiscard, Map}
   end.
 

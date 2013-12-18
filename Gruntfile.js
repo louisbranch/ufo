@@ -3,10 +3,17 @@ module.exports = function(grunt) {
     regarde: {
       js: {
         files: ["src/**/*.erl", "test/**/*.erl"],
-        tasks: ["shell:test"]
+        tasks: ["shell:dialyzer", "shell:test"]
       }
     },
     shell: {
+      dialyzer: {
+        command: "dialyzer -r src --src",
+        options: {
+          stdout: true,
+          stderr: true
+        }
+      },
       test: {
         command: "rebar eunit",
         options: {

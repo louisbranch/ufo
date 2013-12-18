@@ -1,4 +1,4 @@
--module(deck).
+-module(alienation_deck).
 -export([aliens/0, players/0]).
 
 aliens() ->
