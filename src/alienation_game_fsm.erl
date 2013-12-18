@@ -61,7 +61,7 @@ init([]) ->
 %% name as the current state name StateName is called to handle
 %% the event. It is also called if a timeout occurs.
 %%
-%% @spec state_name(Event, State) ->
+%% @spec registering(Event, State) ->
 %%                   {next_state, NextStateName, NextState} |
 %%                   {next_state, NextStateName, NextState, Timeout} |
 %%                   {stop, Reason, NewState}
@@ -82,7 +82,7 @@ registering(start, State) ->
 %% the same name as the current state name StateName is called to
 %% handle the event.
 %%
-%% @spec state_name(Event, From, State) ->
+%% @spec registering(Event, From, State) ->
 %%                   {next_state, NextStateName, NextState} |
 %%                   {next_state, NextStateName, NextState, Timeout} |
 %%                   {reply, Reply, NextStateName, NextState} |
