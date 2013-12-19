@@ -1,4 +1,4 @@
--module(city).
+-module(alienation_city).
 -export([new/2, new/3, find/2, aliens/1, aliens/2,
         connections/1]).
 -record(city, {name, color, connections=[], aliens=[], hqs=0}).

@@ -21,7 +21,7 @@ test_set_difficulty_level(State) ->
 
 test_draw_initial_hands(State) ->
   [Player|_P2] = alienation_game:players(State),
-  ?_assertEqual(4, length(player:hand(Player))).
+  ?_assertEqual(4, length(alienation_player:hand(Player))).
 
 test_remove_players_deck_cards(State) ->
   PlayersDeck = alienation_game:players_deck(State),

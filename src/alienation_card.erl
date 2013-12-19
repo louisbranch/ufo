@@ -1,4 +1,4 @@
--module(card).
+-module(alienation_card).
 -export([draw/2, reveal/2, discard/3,
          initial_hand/2]).
 

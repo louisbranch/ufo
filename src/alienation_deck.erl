@@ -2,12 +2,12 @@
 -export([aliens/0, players/0]).
 
 aliens() ->
-  Cities = map:vertices(),
+  Cities = alienation_map:vertices(),
   shuffle(Cities).
 
 players() ->
   %FIXME
-  Cities = map:vertices(),
+  Cities = alienation_map:vertices(),
   shuffle(Cities).
 
 shuffle(List) ->

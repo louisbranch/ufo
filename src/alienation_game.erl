@@ -6,7 +6,7 @@
     difficulty,
     players=[],
     current_player,
-    cities=map:cities(),
+    cities=alienation_map:cities(),
     aliens_pool=[
       {insectoid, 24},
       {grey, 24},
@@ -32,7 +32,7 @@ add_player(State, Name) ->
 start(Difficulty, State) ->
   Players = players(State),
   Deck = players_deck(State),
-  {DeckDrawn, Hands} = card:initial_hand(Deck, length(Players)),
+  {DeckDrawn, Hands} = alienation_card:initial_hand(Deck, length(Players)),
   PlayersWithHands = alienation_player:distribute_hands(Players, Hands),
   State#state{
     difficulty=Difficulty,

@@ -1,4 +1,4 @@
--module(alien).
+-module(alienation_alien).
 -export([attack/3]).
 
 %% Attack city increase its aliens number
@@ -9,7 +9,7 @@
 %% exit(city_aliens_invalid_number)
 %% exit(alien_type_not_found)
 attack(Type, City, AlienPool) ->
-  Aliens = city:aliens(City),
+  Aliens = alienation_city:aliens(City),
   case total(Aliens) of
     3 -> {invasion, City};
     N when N >= 0 andalso N < 3 -> attack(Type, City, AlienPool, Aliens);
@@ -23,7 +23,7 @@ attack(Type, City, AlienPool, CityAliens) ->
     _ ->
       NewPool = remove_from_pool(Type, AlienPool),
       NewAliens = add_to_city(Type, CityAliens),
-      NewCity = city:aliens(City, NewAliens),
+      NewCity = alienation_city:aliens(City, NewAliens),
       {ok, NewCity, NewPool}
   end.
 

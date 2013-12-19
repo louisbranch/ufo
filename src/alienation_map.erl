@@ -1,7 +1,8 @@
--module(map).
+-module(alienation_map).
 -export([cities/0]).
 -export([vertices/0, edges/0]).
 
+%% @doc
 %% Return list of all cities
 %% on the map and their connection names
 cities() ->
@@ -9,9 +10,10 @@ cities() ->
   Edges = edges(),
   lists:map(fun ({Name, Type}) ->
     Connections = connections(Name, Edges),
-    city:new(Name, Type, Connections)
+    alienation_city:new(Name, Type, Connections)
   end, Vertices).
 
+%% @doc
 %% Return list of all connections
 %% between cities as: {Name1, Name2}
 %% connections are cyclic
