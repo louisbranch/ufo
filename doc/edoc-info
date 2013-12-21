@@ -1,6 +1,7 @@
 %% encoding: UTF-8
 {application,alienation}.
 {packages,[]}.
-{modules,[alien,alienation_app,alienation_deck,alienation_game,
-          alienation_game_fsm,alienation_game_server,alienation_player,
-          alienation_sup,card,city,map,phase]}.
+{modules,[alienation_alien,alienation_app,alienation_card,alienation_city,
+          alienation_deck,alienation_game,alienation_game_fsm,
+          alienation_game_server,alienation_map,alienation_player,
+          alienation_sup]}.

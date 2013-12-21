@@ -10,7 +10,7 @@ game_start_test_() ->
   InitState = alienation_game:init(),
   P1 = alienation_game:add_player(InitState, luiz),
   P2 = alienation_game:add_player(P1, larissa),
-  State = alienation_game:start(normal, P2),
+  State = alienation_game:start(P2, normal),
   [test_set_difficulty_level(State),
    test_draw_initial_hands(State),
    test_remove_players_deck_cards(State),

@@ -5,6 +5,8 @@
 %% @doc
 %% Return list of all cities
 %% on the map and their connection names
+%% @end
+-spec cities() -> [alienation_city:city()].
 cities() ->
   Vertices = vertices(),
   Edges = edges(),
@@ -15,8 +17,9 @@ cities() ->
 
 %% @doc
 %% Return list of all connections
-%% between cities as: {Name1, Name2}
 %% connections are cyclic
+%% @end
+-spec connections(atom(), [atom()]) -> [atom()].
 connections(Name, Connections) ->
   Result = lists:foldl(fun(Connection, Acc) ->
     case Connection of
@@ -27,12 +30,16 @@ connections(Name, Connections) ->
   end, [], Connections),
   lists:reverse(Result).
 
+%% @doc Return list of all map verticies
+-spec vertices() -> [tuple(atom(), atom())].
 vertices() ->
   case file:consult("../map/vertices.erl") of
     {ok, Vertices} -> Vertices;
     _ -> exit(vertices_cant_be_loaded)
   end.
 
+%% @doc Return list of all map edges
+-spec edges() -> [tuple(atom(), atom())].
 edges() ->
   case file:consult("../map/edges.erl") of
     {ok, Edges} -> Edges;
