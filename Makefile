@@ -1,3 +1,3 @@
-PROJECT = alienation
+PROJECT = ufo
 
 include erlang.mk

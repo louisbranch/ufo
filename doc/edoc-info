@@ -1,7 +1,5 @@
 %% encoding: UTF-8
-{application,alienation}.
+{application,ufo}.
 {packages,[]}.
-{modules,[alienation_alien,alienation_app,alienation_card,alienation_city,
-          alienation_deck,alienation_game,alienation_game_fsm,
-          alienation_game_server,alienation_map,alienation_player,
-          alienation_sup]}.
+{modules,[ufo_alien,ufo_app,ufo_card,ufo_city,ufo_deck,ufo_game,ufo_game_fsm,
+          ufo_game_server,ufo_map,ufo_player,ufo_sup]}.
