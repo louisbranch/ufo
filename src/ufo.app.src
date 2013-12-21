@@ -1,12 +1,24 @@
 {application, ufo,
- [
-  {description, ""},
-  {vsn, "1"},
-  {registered, []},
-  {applications, [
-                  kernel,
-                  stdlib
-                 ]},
-  {mod, { ufo_app, []}},
-  {env, []}
- ]}.
+    [
+    {description, ""},
+    {vsn, "1"},
+    {modules, [
+        ufo_alien,
+        ufo_card,
+        ufo_city,
+        ufo_deck,
+        ufo_game,
+        ufo_game_fsm,
+        ufo_game_server,
+        ufo_map,
+        ufo_player,
+        ufo_sup
+    ]},
+    {registered, []},
+    {applications, [
+        kernel,
+        stdlib
+            ]},
+    {mod, { ufo_app, []}},
+    {env, []}
+    ]}.

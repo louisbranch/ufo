@@ -5,14 +5,14 @@ attack_with_an_invalid_pool_test() ->
   Type = red,
   City = ufo_city:new(rio, blue),
   AlienPool = [{blue, 2}],
-  ?assertExit(alien_type_not_found, ufo_alien:attack(Type, City, AlienPool)).
+  ?assertThrow(alien_type_not_found, ufo_alien:attack(Type, City, AlienPool)).
 
 attack_with_an_invalid_city_aliens_test() ->
   Type = blue,
   City = ufo_city:new(rio, blue),
   InvalidCity = ufo_city:aliens(City, [{blue, 4}]),
   AlienPool = [{blue, 2}],
-  ?assertExit(city_aliens_invalid_number, ufo_alien:attack(Type, InvalidCity, AlienPool)).
+  ?assertThrow(city_aliens_invalid_number, ufo_alien:attack(Type, InvalidCity, AlienPool)).
 
 attack_with_an_empty_pool_test() ->
   Type = red,

@@ -5,7 +5,7 @@ new_city_test() ->
   ?assertEqual({city, rio, blue, [], [], 0}, ufo_city:new(rio, blue)).
 
 find_non_existing_city_test() ->
-  ?assertExit(city_not_found, ufo_city:find(rio, [])).
+  ?assertThrow(city_not_found, ufo_city:find(rio, [])).
 
 find_existing_city_test() ->
   City1 = ufo_city:new(sp, red),

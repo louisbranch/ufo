@@ -48,6 +48,7 @@ start_link() ->
 %%                     {stop, StopReason}
 %% @end
 %%--------------------------------------------------------------------
+-spec init([]) -> {'ok', atom(), ufo_game:state()}.
 init([]) ->
   State = ufo_game:init(),
   {ok, state_name, State}.

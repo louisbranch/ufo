@@ -36,9 +36,10 @@ aliens(City, Aliens) -> City#city{aliens=Aliens}.
 connections(City) -> City#city.connections.
 
 %% @doc Find city on map given its name
+%% @throws 'city_not_found'
 -spec find(atom(), [city()]) -> city().
 find(Name, Map) ->
   case lists:keyfind(Name, #city.name, Map) of
-    false -> exit(city_not_found);
+    false -> throw(city_not_found);
     City -> City
   end.

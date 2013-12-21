@@ -2,20 +2,17 @@
 -export([attack/3]).
 
 %% @doc Attack city increasing its aliens number
-%% returns
-%%   {ok, NewCity, NewPool}
-%%   {invasion, City}
-%%   {game_over, alien_pool_empty}
-%%   exit(city_aliens_invalid_number)
-%%   exit(alien_type_not_found)
-%% @end
--spec attack(atom(), ufo_city:city(), [{atom(), integer()}]) -> tuple().
+%% @throws 'city_aliens_invalid_number' | 'alien_type_not_found'
+-spec attack(atom(), ufo_city:city(), [{atom(), integer()}]) ->
+      {'ok', ufo_city:city(), [{atom(), integer()}]}
+    | {'invasion', ufo_city:city()}
+    | {'game_over', 'alien_pool_empty'}.
 attack(Type, City, AlienPool) ->
   Aliens = ufo_city:aliens(City),
   case total(Aliens) of
     3 -> {invasion, City};
     N when N >= 0 andalso N < 3 -> attack(Type, City, AlienPool, Aliens);
-    _ -> exit(city_aliens_invalid_number)
+    _ -> throw(city_aliens_invalid_number)
   end.
 
 attack(Type, City, AlienPool, CityAliens) ->
@@ -44,11 +41,11 @@ add_to_city(Type, Aliens) ->
   end,
   lists:keystore(Type, 1, Aliens, {Type, Qty + 1}).
 
-%% @doc Return an alien tuple or exit the process if doesn't exist
+%% @doc Return an alien tuple or throw error if doesn't exist
 -spec find(atom(), [{atom(), integer()}]) -> {atom(), integer()}.
 find(Type, Aliens) ->
   case lists:keyfind(Type, 1, Aliens) of
-    false -> exit(alien_type_not_found);
+    false -> throw(alien_type_not_found);
     Alien -> Alien
   end.
 

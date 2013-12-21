@@ -15,7 +15,7 @@ draw_invasion_card_deck_test() ->
 
 reveal_empty_deck_test() ->
     {Deck, Pile} = {[], [{blue, rio}]},
-    ?assertExit(empty_alien_deck, ufo_card:reveal(Deck, Pile)).
+    ?assertThrow(empty_alien_deck, ufo_card:reveal(Deck, Pile)).
 
 reveal_normal_deck_test() ->
     {Deck, Pile} = {[{red, ny}, {black, delhi}], [{blue, rio}]},
@@ -23,11 +23,11 @@ reveal_normal_deck_test() ->
 
 discard_card_not_in_hand_test() ->
     {Card, Hand, Discard} = {{red, ny}, [{blue, rio}], [{black, delhi}]},
-    ?assertExit(card_not_in_hand, ufo_card:discard(Card, Hand, Discard)).
+    ?assertEqual({error, card_not_in_hand}, ufo_card:discard(Card, Hand, Discard)).
 
 discard_card_in_hand_test() ->
     {Card, Hand, Discard} = {{red, ny}, [{blue, rio}, {red, ny}], [{black, delhi}]},
-    ?assertEqual({[{blue, rio}], [{red, ny}, {black, delhi}]}, ufo_card:discard(Card, Hand, Discard)).
+    ?assertEqual({ok, [{blue, rio}], [{red, ny}, {black, delhi}]}, ufo_card:discard(Card, Hand, Discard)).
 
 initial_hand_for_two_players_test() ->
     PlayerDeck = [1,2,3,4,5,6,7,8,9,10],
@@ -65,5 +65,5 @@ initial_hand_for_five_players_test() ->
 
 initial_hand_with_invalid_deck_test() ->
     PlayerDeck = [],
-    ?assertExit(invalid_player_deck, ufo_card:initial_hand(PlayerDeck, 2)).
+    ?assertThrow(invalid_player_deck, ufo_card:initial_hand(PlayerDeck, 2)).
 

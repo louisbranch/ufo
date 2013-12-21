@@ -31,17 +31,19 @@ connections(Name, Connections) ->
   lists:reverse(Result).
 
 %% @doc Return list of all map verticies
+%% @throws 'vertices_cant_be_loaded'
 -spec vertices() -> [tuple(atom(), atom())].
 vertices() ->
   case file:consult("../data/vertices.erl") of
     {ok, Vertices} -> Vertices;
-    _ -> exit(vertices_cant_be_loaded)
+    _ -> throw(vertices_cant_be_loaded)
   end.
 
 %% @doc Return list of all map edges
+%% @throws 'edges_cant_be_loaded'
 -spec edges() -> [tuple(atom(), atom())].
 edges() ->
   case file:consult("../data/edges.erl") of
     {ok, Edges} -> Edges;
-    _ -> exit(edges_cant_be_loaded)
+    _ -> throw(edges_cant_be_loaded)
   end.
