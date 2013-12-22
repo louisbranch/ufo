@@ -4,8 +4,8 @@
 
 -record(state, {
         difficulty::atom(),
-        players=[]::[tuple()],
-        current_player::tuple(),
+        players=[]::[ufo_player:player()],
+        current_player::ufo_player:player(),
         cities=ufo_map:cities()::[ufo_city:city()],
         aliens_pool=[
           {insectoid, 24},
@@ -55,11 +55,11 @@ start(State, Difficulty) ->
   }.
 
 %% @doc Get players
--spec players(state()) -> [tuple()].
+-spec players(state()) -> [ufo_player:player()].
 players(S) -> S#state.players.
 
 %% @doc Set players
--spec players(state(), [tuple()]) -> state().
+-spec players(state(), [ufo_player:player()]) -> state().
 players(S, Players) -> S#state{players=Players}.
 
 %% @doc Get players deck
@@ -71,5 +71,5 @@ players_deck(S) -> S#state.players_deck.
 difficulty(S) -> S#state.difficulty.
 
 %% @doc Get current player
--spec current_player(state()) -> tuple().
+-spec current_player(state()) -> ufo_player:player().
 current_player(S) -> S#state.current_player.
