@@ -2,10 +2,7 @@
 -export([cities/0]).
 -export([vertices/0, edges/0]).
 
-%% @doc
-%% Return list of all cities
-%% on the map and their connection names
-%% @end
+%% @doc Return list of all cities on the map and their connection names
 -spec cities() -> [ufo_city:city()].
 cities() ->
   Vertices = vertices(),
@@ -15,10 +12,7 @@ cities() ->
     ufo_city:new(Name, Type, Connections)
   end, Vertices).
 
-%% @doc
-%% Return list of all connections
-%% connections are cyclic
-%% @end
+%% @doc Return list of all connections connections are cyclic
 -spec connections(atom(), [atom()]) -> [atom()].
 connections(Name, Connections) ->
   Result = lists:foldl(fun(Connection, Acc) ->

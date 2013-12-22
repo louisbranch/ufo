@@ -7,12 +7,7 @@
         players=[]::[ufo_player:player()],
         current_player::ufo_player:player(),
         cities=ufo_map:cities()::[ufo_city:city()],
-        aliens_pool=[
-          {insectoid, 24},
-          {grey, 24},
-          {reptilian, 24},
-          {martian, 24}
-            ]::[tuple()],
+        aliens_pool=ufo_alien:new_pool()::[ufo_alien:pool()],
         aliens_deck=ufo_deck:aliens()::[ufo_card:card()],
         aliens_discard=[]::[ufo_card:card()],
         players_deck=ufo_deck:players()::[ufo_card:card()],

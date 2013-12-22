@@ -1,6 +1,10 @@
 -module(ufo_alien_tests).
 -include_lib("eunit/include/eunit.hrl").
 
+new_pool_test() ->
+  Pool = ufo_alien:new_pool(),
+  ?assertEqual(length(Pool), 4).
+
 attack_with_an_invalid_pool_test() ->
   Type = red,
   City = ufo_city:new(rio, blue),

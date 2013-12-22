@@ -1,5 +1,17 @@
 -module(ufo_alien).
--export([attack/3]).
+-export([new_pool/0, attack/3]).
+
+-opaque pool() :: {atom(), integer()}.
+-export_type([pool/0]).
+
+%% @doc Return a new alien type pool
+%% @throws 'alien_pool_cant_be_loaded'
+-spec new_pool() -> [pool()].
+new_pool() ->
+  case file:consult("../data/alien_pool.erl") of
+    {ok, Pool} -> Pool;
+    _ -> throw(alien_pool_cant_be_loaded)
+  end.
 
 %% @doc Attack city increasing its aliens number
 %% @throws 'city_aliens_invalid_number' | 'alien_type_not_found'
