@@ -1,5 +1,5 @@
 -module(ufo_card).
--export([draw/2, reveal/2, discard/3, initial_hand/2]).
+-export([draw/2, reveal/2, discard/3, initial_hand/2, card_from_city/2]).
 -record(city, {
         name::atom(),
         type::atom()
@@ -94,3 +94,9 @@ draw_for_each(PlayerDeck, [Hand|Hands], HandsDrew) ->
             draw_for_each(NewDeck, Hands, [NewHand|HandsDrew]);
         _ -> throw(invalid_player_deck)
     end.
+
+%% @doc Compare with card and city has the same name
+-spec card_from_city(#city{}, ufo_city:city()) -> boolean().
+card_from_city(Card, City) ->
+    Name = ufo_city:name(City),
+    Name =:= Card#city.name.

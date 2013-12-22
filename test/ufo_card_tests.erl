@@ -67,3 +67,12 @@ initial_hand_with_invalid_deck_test() ->
     PlayerDeck = [],
     ?assertThrow(invalid_player_deck, ufo_card:initial_hand(PlayerDeck, 2)).
 
+compare_same_city_and_card_test() ->
+    City = ufo_city:new(sp, red),
+    Card = {city, sp, red},
+    ?assertEqual(true, ufo_card:card_from_city(Card, City)).
+
+compare_different_city_and_card_test() ->
+    City = ufo_city:new(rio, red),
+    Card = {city, sp, red},
+    ?assertEqual(false, ufo_card:card_from_city(Card, City)).

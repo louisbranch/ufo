@@ -1,12 +1,12 @@
 -module(ufo_city).
--export([new/2, new/3, find/2, aliens/1, aliens/2,
-        connections/1]).
+-export([new/2, new/3, find/2, aliens/1, aliens/2, connections/1, name/1, players/1, players/2]).
 -record(city, {
         name::atom(),
         type::atom(),
-        connections=[]::list(atom()),
-        aliens=[]::list(tuple()),
-        hqs=0::integer()
+        connections=[]::[atom()],
+        aliens=[]::[tuple()],
+        players=[]::[{}],
+        hqs=false::boolean()
        }).
 -opaque city() :: #city{}.
 -export_type([city/0]).
@@ -43,3 +43,15 @@ find(Name, Map) ->
     false -> throw(city_not_found);
     City -> City
   end.
+
+%% @doc Get city name
+-spec name(city()) -> atom().
+name(City) -> City#city.name.
+
+%% @doc Get city players
+-spec players(city()) -> [{}].
+players(City) -> City#city.players.
+
+%% @doc Set city players
+-spec players(city(), [{}]) -> city().
+players(City, Players) -> City#city{players=Players}.
