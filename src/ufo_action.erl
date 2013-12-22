@@ -11,7 +11,11 @@ new_pool(_Role) -> 4.
 %% surrouding players
 %% @end
 -spec available_options(atom(), [ufo_card:card()], ufo_city:city()) ->
-    [tuple(term(), atom())].
+    [
+        {'card', ufo_card:card(), 'fly_from' | 'place_hq' | 'fly_to'}
+        | {'defend', 'all' | 'one'}
+        | {'trade_cards'}
+    ].
 available_options(Role, Hand, City) ->
     CityOptions = city_cards_options(Hand, City),
     DefenseOptions = defense_options(Role, City),
@@ -30,7 +34,8 @@ city_cards_options([Card|Hands], City) ->
             [{card, Card, fly_to}|city_cards_options(Hands, City)]
     end.
 
--spec defense_options(atom(), ufo_city:city()) -> [{atom(), atom()}].
+-spec defense_options(atom(), ufo_city:city()) ->
+    [{'defend', 'all' | 'one'}].
 defense_options(Role, City) ->
     Aliens = ufo_city:aliens(City),
     defense_for_role(Role, Aliens).
