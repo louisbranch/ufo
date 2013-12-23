@@ -59,8 +59,22 @@ move_from_adjecente_cities_test_() ->
 
 origin_city_test(Name, Map) ->
     City = ufo_city:find(Name, Map),
-    ?_assertEqual(1, length(ufo_city:players(City))).
+    ?_assertEqual(0, length(ufo_city:players(City))).
 
 destinty_city_test(Name, Map, Player) ->
     City = ufo_city:find(Name, Map),
     ?_assertEqual([Player], ufo_city:players(City)).
+
+fly_from_wrong_origin_test() ->
+    Map = ufo_map:cities(),
+    Player = ufo_player:new(luiz),
+    Movement = ufo_city:move(Player, chicago, montreal, Map),
+    ?assertEqual({error, wrong_origin}, Movement).
+
+fly_to_other_city_test() ->
+    Map = ufo_map:cities(),
+    Player = ufo_player:new(luiz),
+    InitialMap = ufo_city:initial_position(Map, [Player]),
+    Movement = ufo_city:fly(Player, atlanta, essen, InitialMap),
+    {ok, NewMap} = Movement,
+    [origin_city_test(atlanta, NewMap), destinty_city_test(essen, NewMap, Player)].

@@ -1,6 +1,6 @@
 -module(ufo_city).
 -export([new/2, new/3, find/2, aliens/1, aliens/2, connections/1, name/1,
-         players/1, players/2, initial_position/2, move/4]).
+         players/1, players/2, initial_position/2, move/4, fly/4]).
 -record(city, {
         name::atom(),
         type::atom(),
@@ -70,27 +70,31 @@ move(Player, NameOrigin, NameDestiny, Map) ->
     Origin = find(NameOrigin, Map),
     Destiny = find(NameDestiny, Map),
     case adjecent(Origin, Destiny) of
-        true ->
-            case realocate_player(Player, Origin, Destiny) of
-                {ok, NewOrigin, NewDestiny} ->
-                    NewMap = update(NewOrigin, Map),
-                    {ok, update(NewDestiny, NewMap)};
-                Error -> Error
-        end;
+        true -> realocate_player(Player, Origin, Destiny, Map);
         false -> {error, not_adjecent}
     end.
 
+%% @doc Move player to any other city
+-spec fly(ufo_player:player(), atom(), atom(), [city()]) ->
+    {'ok', [city()]}
+    | {'error', 'wrong_origin'}.
+fly(Player, NameOrigin, NameDestiny, Map) ->
+    Origin = find(NameOrigin, Map),
+    Destiny = find(NameDestiny, Map),
+    realocate_player(Player, Origin, Destiny, Map).
+
 %% @doc Remove a player from a city and add to another
--spec realocate_player(ufo_player:player(), city(), city()) ->
-    {'ok', city(), city()} | {'error', 'wrong_origin'}.
-realocate_player(Player, Origin, Destiny) ->
+-spec realocate_player(ufo_player:player(), city(), city(), [city()]) ->
+    {'ok', [city()]} | {'error', 'wrong_origin'}.
+realocate_player(Player, Origin, Destiny, Map) ->
     Players = lists:delete(Player, players(Origin)),
     NewOrigin = players(Origin, Players),
     if
         Origin =:= NewOrigin -> {error, wrong_origin};
         true ->
             NewDestiny = players(Destiny, [Player|players(Destiny)]),
-            {ok, NewOrigin, NewDestiny}
+            NewMap = update(NewOrigin, Map),
+            {ok, update(NewDestiny, NewMap)}
     end.
 
 %% @doc Return whether two cities are connected
