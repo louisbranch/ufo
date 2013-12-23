@@ -1,5 +1,5 @@
 -module(ufo_player).
--export([new/1, add/2, remove/2, name/1, hand/1, hand/2, distribute_hands/2]).
+-export([new/1, add/2, name/1, hand/1, hand/2, distribute_hands/2]).
 -record(player, {name::binary(), hand=[]::[tuple()]}).
 
 -opaque player() :: #player{}.
@@ -14,11 +14,6 @@ new(Name) ->
 -spec add([player()], binary()) -> [player()].
 add(Players, Name) ->
     [new(Name)|Players].
-
-%% @doc Remove player using the name from a players list
--spec remove([player()], binary()) -> [player()].
-remove(Players, Name) ->
-    lists:keydelete(Name, #player.name, Players).
 
 %% @doc Get player hand
 -spec hand(player()) -> [tuple()].

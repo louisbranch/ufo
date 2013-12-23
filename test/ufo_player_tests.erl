@@ -11,9 +11,6 @@ new_player_test() ->
 add_player_test() ->
   ?assertEqual([{player, larissa, []}, {player, luiz, []}], players_helper()).
 
-remove_player_test() ->
-  ?assertEqual([{player, larissa, []}], ufo_player:remove(players_helper(), luiz)).
-
 get_name_test() ->
   Player = ufo_player:new(luiz),
   ?assertEqual(luiz, ufo_player:name(Player)).

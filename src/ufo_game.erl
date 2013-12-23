@@ -3,7 +3,7 @@
 -export([players/1, players_deck/1, difficulty/1, current_player/1]).
 
 -record(state, {
-        difficulty::atom(),
+        difficulty::'easy'|'normal'|'hard',
         players=[]::[ufo_player:player()],
         current_player::ufo_player:player(),
         cities=ufo_map:cities()::[ufo_city:city()],
