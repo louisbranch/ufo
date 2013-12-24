@@ -1,5 +1,6 @@
 -module(ufo_card).
--export([draw/2, reveal/2, discard/3, initial_hand/2, card_from_city/2]).
+-export([draw/2, reveal/2, discard/3, initial_hand/2, card_from_city/2,
+        group_by_city_type/1]).
 -record(city, {
         name::atom(),
         type::atom()
@@ -98,5 +99,32 @@ draw_for_each(PlayerDeck, [Hand|Hands], HandsDrew) ->
 %% @doc Compare with card and city has the same name
 -spec card_from_city(#city{}, ufo_city:city()) -> boolean().
 card_from_city(Card, City) ->
-    Name = ufo_city:name(City),
-    Name =:= Card#city.name.
+    case Card of
+        #city{} ->
+            Name = ufo_city:name(City),
+            Name =:= Card#city.name;
+        _ -> false
+    end.
+
+%% @doc Group city cards by their types
+-spec group_by_city_type([card()]) -> [{atom(), [card()]}].
+group_by_city_type(Hand) ->
+    group_by_city_type(Hand, []).
+
+-spec group_by_city_type([card()], [{atom(), [card()]}]) ->
+    [{atom(), [card()]}].
+group_by_city_type([], Groups) -> Groups;
+group_by_city_type([Card|T], Groups) ->
+    case Card of
+        #city{} ->
+            Type = Card#city.type,
+            case lists:keyfind(Type, 1, Groups) of
+                false -> group_by_city_type(T, [{Type, [Card]}|Groups]);
+                {Type, Cards} ->
+                    NewGroups = lists:keystore(Type, 1, Groups, {Type, [Card|Cards]}),
+                    group_by_city_type(T, NewGroups)
+            end;
+        _ -> group_by_city_type(T, Groups)
+    end.
+
+

@@ -29,7 +29,7 @@
 %% @end
 %%--------------------------------------------------------------------
 start_link() ->
-  gen_fsm:start_link({local, ?MODULE}, ?MODULE, [], []).
+    gen_fsm:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 %%%===================================================================
 %%% gen_fsm callbacks
@@ -50,8 +50,8 @@ start_link() ->
 %%--------------------------------------------------------------------
 -spec init([]) -> {'ok', atom(), ufo_game:state()}.
 init([]) ->
-  State = ufo_game:init(),
-  {ok, state_name, State}.
+    State = ufo_game:init(),
+    {ok, registering, State}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -68,11 +68,17 @@ init([]) ->
 %%                   {stop, Reason, NewState}
 %% @end
 %%--------------------------------------------------------------------
-registering({join, _Name}, State) ->
-  {next_state, registering, State};
+-spec registering({atom(), pid(), term()}, ufo_game:state()) ->
+    {'next_state', atom(), ufo_game:state()}.
+registering({join, From, Name}, State) ->
+    NewState = ufo_game:add_player(State, Name),
+    From ! {ok, NewState},
+    {next_state, registering, NewState};
 
-registering(start, State) ->
-  {next_state, player_turn, State}.
+registering({start, From, Difficulty}, State) ->
+    NewState = ufo_game:start(State, Difficulty),
+    From ! {ok, NewState},
+    {next_state, player_turn, NewState}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -93,7 +99,7 @@ registering(start, State) ->
 %% @end
 %%--------------------------------------------------------------------
 registering(_Event, _From, State) ->
-  {stop, unknown_sync_event, State}.
+    {stop, unknown_sync_event, State}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -109,7 +115,7 @@ registering(_Event, _From, State) ->
 %% @end
 %%--------------------------------------------------------------------
 handle_event(_Event, StateName, State) ->
-  {next_state, StateName, State}.
+    {next_state, StateName, State}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -128,7 +134,7 @@ handle_event(_Event, StateName, State) ->
 %% @end
 %%--------------------------------------------------------------------
 handle_sync_event(current_state, _From, StateName, State) ->
-  {reply, {current_state, StateName}, StateName, State}.
+    {reply, {current_state, StateName}, StateName, State}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -144,7 +150,7 @@ handle_sync_event(current_state, _From, StateName, State) ->
 %% @end
 %%--------------------------------------------------------------------
 handle_info(_Info, _StateName, State) ->
-  {stop, unknown_info_event, State}.
+    {stop, unknown_info_event, State}.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -158,7 +164,7 @@ handle_info(_Info, _StateName, State) ->
 %% @end
 %%--------------------------------------------------------------------
 terminate(_Reason, _StateName, _State) ->
-  ok.
+    ok.
 
 %%--------------------------------------------------------------------
 %% @private
@@ -170,4 +176,4 @@ terminate(_Reason, _StateName, _State) ->
 %% @end
 %%--------------------------------------------------------------------
 code_change(_OldVsn, StateName, State, _Extra) ->
-  {ok, StateName, State}.
+    {ok, StateName, State}.

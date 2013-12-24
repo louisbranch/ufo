@@ -15,12 +15,15 @@ new_pool(_Role) -> 4.
         {'card', ufo_card:card(), 'fly_from' | 'place_hq' | 'fly_to'}
         | {'defend', 'all' | 'one'}
         | {'trade_cards'}
+        | {'exterminate', atom()}
     ].
 available_options(Role, Hand, City) ->
     CityOptions = city_cards_options(Hand, City),
     DefenseOptions = defense_options(Role, City),
     TradeOptions = trade_options(City),
-    lists:flatten([DefenseOptions,TradeOptions,CityOptions]).
+    ExterminateOptions = exterminate_options(Role, Hand),
+    lists:flatten([ExterminateOptions, TradeOptions, DefenseOptions,
+                   CityOptions]).
 
 -spec city_cards_options([ufo_card:card()], ufo_city:city()) ->
     [{'card', ufo_card:card(), 'fly_from' | 'place_hq' | 'fly_to'}].
@@ -51,4 +54,23 @@ trade_options(City) ->
     if
         length(Players) > 1 -> [{trade_cards}];
         true -> []
+    end.
+
+-spec exterminate_options(atom(), [ufo_card:card()]) ->
+    [{'exterminate', atom()}].
+exterminate_options(_Role, []) -> [];
+exterminate_options(scientist, Hand) ->
+    exterminate_for_role(Hand, 4);
+exterminate_options(_Role, Hand) ->
+    exterminate_for_role(Hand, 5).
+
+-spec exterminate_for_role([ufo_card:card()], integer()) ->
+    [{'exterminate', atom()}].
+exterminate_for_role(Hand, Needed) ->
+    Groups = ufo_card:group_by_city_type(Hand),
+    Choices = lists:filter(fun({_, Cards}) ->
+                    length(Cards) >= Needed end, Groups),
+    case Choices of
+        [{Type, _}|[]] -> [{exterminate, Type}];
+        _ -> []
     end.

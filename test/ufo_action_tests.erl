@@ -44,3 +44,14 @@ available_trading_options_test() ->
     City = ufo_city:new(rio, blue),
     CityWithPlayers = ufo_city:players(City, [1,2]),
     ?assertEqual([{trade_cards}], ufo_action:available_options(Role, Hand, CityWithPlayers)).
+
+available_extermination_options_for_any_role_test() ->
+    Role = any,
+    Hand = [
+            {special, one_quiet_night}, {city, essen, red},
+            {city, sp, red}, {city, rio, red}, {city, ny, red},
+            {city, bh, red}
+           ],
+    City = ufo_city:new(unknown, yellow),
+    [Option|_] = ufo_action:available_options(Role, Hand, City),
+    ?assertEqual({exterminate, red}, Option).

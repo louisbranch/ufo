@@ -76,3 +76,15 @@ compare_different_city_and_card_test() ->
     City = ufo_city:new(rio, red),
     Card = {city, sp, red},
     ?assertEqual(false, ufo_card:card_from_city(Card, City)).
+
+compare_non_city_card_test() ->
+    City = ufo_city:new(rio, red),
+    Card = {special, one_quiet_night},
+    ?assertEqual(false, ufo_card:card_from_city(Card, City)).
+
+group_by_city_type_test() ->
+    Hand = [{city, sp, red}, {city, rio, blue}, {city, ny, blue},
+            {city, essen, red}, {special, one_quiet_night}],
+    Groups = [{blue, [{city, ny, blue}, {city, rio, blue}]},
+              {red, [{city, essen, red}, {city, sp, red}]}],
+    ?assertEqual(Groups, ufo_card:group_by_city_type(Hand)).
