@@ -17,7 +17,8 @@
     {registered, []},
     {applications, [
         kernel,
-        stdlib
+        stdlib,
+        cowboy
             ]},
     {mod, { ufo_app, []}},
     {env, []}
