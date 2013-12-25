@@ -1,5 +1,5 @@
 ebin
 test/*.beam
-_rel/
+rel/
 deps/
 .eunit

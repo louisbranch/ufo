@@ -8,21 +8,21 @@ module.exports = function(grunt) {
     },
     shell: {
       doc: {
-        command: "rebar doc",
+        command: "rebar doc apps=ufo",
         options: {
           stdout: true,
           stderr: true
         }
       },
       dialyzer: {
-        command: "dialyzer -r src --src",
+        command: "dialyzer -r src --src --quiet",
         options: {
           stdout: true,
           stderr: true
         }
       },
       test: {
-        command: "rebar eunit",
+        command: "rebar eunit apps=ufo",
         options: {
           stdout: true,
           stderr: true

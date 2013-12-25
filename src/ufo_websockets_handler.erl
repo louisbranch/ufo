@@ -1,4 +1,4 @@
--module(ufo_handler).
+-module(ufo_websockets_handler).
 -behaviour(cowboy_websocket_handler).
 
 -export([init/3, websocket_init/3, websocket_handle/3, websocket_info/3,
@@ -10,8 +10,10 @@ init({tcp, http}, _Req, _Opts) ->
 	{upgrade, protocol, cowboy_websocket}.
 
 websocket_init(_TransportName, Req, _Opts) ->
-    {ok, Pid} = ufo_game_fsm:start_link(),
-	{ok, Req, #state{game=Pid}}.
+    case ufo_game_fsm:start_link() of
+        {ok, Pid} -> {ok, Req, #state{game=Pid}};
+        _ -> {shutdown, Req}
+    end.
 
 websocket_handle({text, Msg}, Req, State) ->
     try jsx:decode(Msg) of

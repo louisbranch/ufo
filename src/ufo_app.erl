@@ -14,12 +14,12 @@ start(_StartType, _StartArgs) ->
                 %% {URIHost, list({URIPath, Handler, Opts})}
                 {'_', [
                         {"/", cowboy_static, {priv_file, ufo, "static/index.html"}},
-                        {"/websocket", ufo_handler, []},
+                        {"/websocket", ufo_websockets_handler, []},
                         {"/static/[...]", cowboy_static, {priv_dir, ufo, "static"}}
                         ]}
                 ]),
     %% Name, NbAcceptors, TransOpts, ProtoOpts
-    cowboy:start_http(my_http_listener, 100,
+    cowboy:start_http(http, 100,
                       [{port, 8080}],
                       [{env, [{dispatch, Dispatch}]}]
                      ),

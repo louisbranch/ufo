@@ -2,4 +2,5 @@
 {application,ufo}.
 {packages,[]}.
 {modules,[ufo_action,ufo_alien,ufo_app,ufo_card,ufo_city,ufo_deck,ufo_game,
-          ufo_game_fsm,ufo_game_server,ufo_map,ufo_player,ufo_sup]}.
+          ufo_game_fsm,ufo_game_server,ufo_map,ufo_player,ufo_sup,
+          ufo_websockets_handler]}.
