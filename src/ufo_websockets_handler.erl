@@ -16,11 +16,13 @@ websocket_init(_TransportName, Req, _Opts) ->
     end.
 
 websocket_handle({text, Msg}, Req, State) ->
-    try jsx:decode(Msg) of
-        [{<<"join">>, Name}] ->
+    try
+        [{Term1, Term2}] = jsx:decode(Msg),
+        {Command, Param} = {erlang:binary_to_existing_atom(Term1, utf8), Term2}
+    of
+        {join, Name} ->
             gen_fsm:send_event(State#state.game, {join, self(), Name}),
-            {ok, Req, State};
-        _ -> {reply, {text, << "Unknown comand: ", Msg/binary >>}, Req, State}
+            {ok, Req, State}
     catch
         _:_ -> {reply, {text, << "Unknown comand: ", Msg/binary >>}, Req, State}
     end;
@@ -34,7 +36,9 @@ websocket_info({timeout, _Ref, Msg}, Req, State) ->
 websocket_info(Message, Req, State) ->
     case Message of
         {ok, _GameState} ->
-            {reply, {text, <<"Ok!">>}, Req, State};
+            %%FIXME
+            Json = jsx:encode([{ok,true}]),
+            {reply, {text, Json}, Req, State};
         _ ->
             {ok, Req, State}
     end.

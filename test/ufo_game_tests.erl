@@ -37,3 +37,10 @@ test_initial_players_position(State) ->
     Atlanta = ufo_city:find(atlanta, Map),
     CityPlayers = ufo_city:players(Atlanta),
     ?_assertEqual(2, length(CityPlayers)).
+
+diff_state_players_test() ->
+    InitState = ufo_game:init(),
+    P1 = ufo_game:add_player(InitState, luiz),
+    P2 = ufo_game:add_player(P1, larissa),
+    Player = ufo_player:new(larissa),
+    ?assertEqual([{players, [Player]}], ufo_game:diff(P1, P2)).

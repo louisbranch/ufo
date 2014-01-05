@@ -72,12 +72,12 @@ init([]) ->
     {'next_state', atom(), ufo_game:state()}.
 registering({join, From, Name}, State) ->
     NewState = ufo_game:add_player(State, Name),
-    From ! {ok, NewState},
+    From ! {ok, ufo_game:diff(State, NewState)},
     {next_state, registering, NewState};
 
 registering({start, From, Difficulty}, State) ->
     NewState = ufo_game:start(State, Difficulty),
-    From ! {ok, NewState},
+    From ! {ok, ufo_game:diff(State, NewState)},
     {next_state, player_turn, NewState}.
 
 %%--------------------------------------------------------------------
@@ -134,7 +134,9 @@ handle_event(_Event, StateName, State) ->
 %% @end
 %%--------------------------------------------------------------------
 handle_sync_event(current_state, _From, StateName, State) ->
-    {reply, {current_state, StateName}, StateName, State}.
+    {reply, {current_state, StateName}, StateName, State};
+handle_sync_event(_Event, _From, _StateName, State) ->
+    {stop, unknown_info_event, State}.
 
 %%--------------------------------------------------------------------
 %% @private

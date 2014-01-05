@@ -1,6 +1,7 @@
 -module(ufo_game).
 -export([init/0, start/2, add_player/2]).
--export([players/1, players_deck/1, difficulty/1, current_player/1, map/1]).
+-export([players/1, players_deck/1, difficulty/1, current_player/1, map/1,
+        diff/2]).
 
 -record(state, {
         difficulty::'easy'|'normal'|'hard',
@@ -76,3 +77,27 @@ current_player(S) -> S#state.current_player.
 %% @doc Get game map
 -spec map(state()) -> [ufo_city:city()].
 map(S) -> S#state.map.
+
+%% @doc Return a diff between two states with relevant info for players
+-spec diff(state(), state()) -> [{atom(), term()}].
+diff(OldState, NewState) ->
+    Comparables = [{players, #state.players},
+                   {current_player, #state.current_player},
+                   {map, #state.map},
+                   {aliens_pool, #state.aliens_pool},
+                   {hqs_pool, #state.hqs_pool},
+                   {invasions, #state.invasions},
+                   {attack_rate, #state.attack_rate}],
+    lists:foldl(fun ({Name, Index}, Acc) ->
+                Old = erlang:element(Index, OldState),
+                New = erlang:element(Index, NewState),
+                case New of
+                    Old ->
+                        Acc;
+                    _ when is_list(New) ->
+                        List = lists:subtract(New, Old),
+                        [{Name, List}|Acc];
+                    _ ->
+                        [{Name, New}|Acc]
+                end
+        end, [], Comparables).
