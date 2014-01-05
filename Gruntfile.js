@@ -27,6 +27,14 @@ module.exports = function(grunt) {
           stdout: true,
           stderr: true
         }
+      },
+      run: {
+        command: "rebar compile && rm -r rel/ufo && rebar generate" +
+                 "&& rel/ufo/bin/ufo console",
+        options: {
+          stdout: true,
+          stderr: true
+        }
       }
     }
   });
